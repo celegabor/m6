@@ -1,4 +1,4 @@
-.form-login{
+.div-form-login{
     width: 100vw;
     height: 100vh;
     background-color: black;
@@ -8,7 +8,7 @@
     justify-content: center;
 }
 
-form{
+.form-login{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,7 +21,7 @@ form{
     border-radius: 40px;
 }
 
-input{
+.input-login{
     padding: 1em;
     background-color: blue;
     color: white;
@@ -29,12 +29,12 @@ input{
     border-radius: 10px;
 }
 
-label{
+.label-login{
     padding: 1em;
     font-size: 1.4em;
 }
 
-button{
+.button-login{
     margin: 1em;
     width: 30%;
     background-color: greenyellow;

@@ -27,6 +27,11 @@ function Login() {
                 body: JSON.stringify(loginData)
             })
             const data = await response.json()
+
+            if(data.token){
+                localStorage.setItem('loggedInUser', JSON.stringify(data.token))
+            }
+
             setLogin(data)
             
         } catch (e) {
@@ -36,24 +41,24 @@ function Login() {
 
   return (
     <>
-        <div className="form-login">
-            <form onSubmit={onSubmit}>
-                <label htmlFor="email">email</label>
-                <input 
+        <div className="div-form-login">
+            <form className='form-login' onSubmit={onSubmit}>
+                <label className='label-login' htmlFor="email">email</label>
+                <input className='input-login' 
                 type="email" 
                 name='email' 
                 required
                 onChange={handleInputChange}
                  />
-                <label htmlFor="password">password</label>
-                <input 
+                <label className='label-login' htmlFor="password">password</label>
+                <input className='input-login' 
                 type="password" 
                 name='password' 
                 required
                 onChange={handleInputChange}
                 />
 
-                <button>accedi</button>
+                <button className='button-login'>accedi</button>
             </form>
         
         </div>    
