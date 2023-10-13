@@ -1,0 +1,83 @@
+.user-list{
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
+    flex-wrap: wrap;
+    padding: 3em 0;
+}
+
+img{
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.cards{
+    width: 20%;
+    background-color: rgb(30, 30, 30);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    filter: drop-shadow(0 0 5px blue);
+}
+
+.card-details{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1{
+    width: 100vw;
+    text-align: center;
+    color: lightblue;
+    background-color: black; 
+    margin-bottom: 0;   
+}
+
+.pagination-container{
+    background-color: black;
+    padding-bottom: 3em;
+}
+
+:root {
+    --pagination-color: white;
+    --pagination-hover-color: red;
+    --pagination-bg: none;
+    --pagination-margin-bottom: red;
+}
+
+.button-add-container{
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    background-color: black;
+    padding: 3em;
+}
+
+.button-add{
+    border: 6px double white;
+}
+
+.spinner-container{
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.spinner-container *{
+    font-size: 2em;
+}

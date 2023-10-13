@@ -1,0 +1,11 @@
+.footer-custom{
+    background-color: rgb(30, 30, 30) !important;
+    color: white !important;
+    border-top: 1px solid blue;
+    height: 15vh;
+}
+
+.nav-link{
+    color: white !important;
+    text-decoration: none;
+}

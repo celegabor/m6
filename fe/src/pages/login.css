@@ -1,0 +1,46 @@
+.form-login{
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    height: 50%;
+    border: 10px double blue;
+    background-color: black;
+    filter: drop-shadow(0 0 10px rgb(105, 101, 101));
+    border-radius: 40px;
+}
+
+input{
+    padding: 1em;
+    background-color: blue;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+label{
+    padding: 1em;
+    font-size: 1.4em;
+}
+
+button{
+    margin: 1em;
+    width: 30%;
+    background-color: greenyellow;
+    padding: 0.5em;
+    border: 5px solid green;
+    filter: drop-shadow(0 0 5px white);
+    border-radius: 100px;
+}
+
