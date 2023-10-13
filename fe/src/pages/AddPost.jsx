@@ -158,7 +158,7 @@ const AddPost = () => {
           
           {/* Bottone Home */}
           <div className="button-confirm-container">
-            <Link to={`/`}>
+            <Link to={`/home`}>
               <Button className='px-5 py-2 m-3' variant='success'>Home</Button>
             </Link>
           </div>

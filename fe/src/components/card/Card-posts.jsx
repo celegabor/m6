@@ -19,7 +19,6 @@ const Card = ({ post }) => {
         {showAuthor ? '' : '? user ?'}
       </Button>
 
-
       {showAuthor && (
         <div className='user-detail'>
           <Button variant="info" className='button-details-user-in py-1' onClick={toggleAuthor}>
