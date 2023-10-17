@@ -7,6 +7,7 @@ import ModificaUser from './pages/ModificaUser'
 import AddUser from './pages/AddUser'
 import AddPost from './pages/AddPost'
 import Login from './pages/Login'
+import ProtectedRouts from './middlewares/ProtectedRoutes';
 
 
 const App = ()=>{
@@ -15,11 +16,17 @@ const App = ()=>{
       <Routes>
 
         <Route exact path="/" element={<Login />}/>
-        <Route path="/addUser" element={<AddUser />}/>
-        <Route path="/addPost" element={<AddPost />}/>
-        <Route path="/modificaPost/:id" element={<ModificaPost />}/>
-        <Route path="/modificaUser/:id" element={<ModificaUser />}/>
-        <Route path="/home" element={<Home />}/>
+
+        <Route element={<ProtectedRouts/>}>
+
+          <Route path="/addUser" element={<AddUser />}/>
+          <Route path="/addPost" element={<AddPost />}/>
+          <Route path="/modificaPost/:id" element={<ModificaPost />}/>
+          <Route path="/modificaUser/:id" element={<ModificaUser />}/>
+          <Route path="/home" element={<Home />}/>
+
+        </Route>
+
         <Route path="*" element={<Other />}/>
 
       </Routes>

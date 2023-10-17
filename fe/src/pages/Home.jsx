@@ -8,6 +8,7 @@ import LatestPosts from '../components/LatestPosts/LatestPosts'
 
 
 
+
 const Home = ()=> {
   return (
     <PostProvider>

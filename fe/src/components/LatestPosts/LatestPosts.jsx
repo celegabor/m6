@@ -5,9 +5,13 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import ResponsivePagination from 'react-responsive-pagination';
 import Spinner from 'react-bootstrap/Spinner';
+import useSession from "../../hooks/useSession";
+import Form from 'react-bootstrap/Form';
+
 
 import 'react-responsive-pagination/themes/classic.css';
 import './latest.css'
+
 
 
 const LatestPosts = ()=>{
@@ -21,114 +25,142 @@ const LatestPosts = ()=>{
     const [courentPageUsers, setCourentPageUsers] = useState(1)
     const [itemsPageUsers, setItemsPageUsers] = useState(3)
     const [itemsPagePosts, setItemsPagePosts] = useState(3)
-
+    const [inputText, setInputText] = useState(''); 
+    const [filteredPosts, setFilteredPosts] = useState([]); 
+    const [filteredUsers, setFilteredUsers] = useState([]); 
+  
     
 
-      const getPosts = async ()=>{
+    const session = useSession()
 
-          setIsLoading(true); 
-          try {
-              // const response = await fetch(`http://localhost:2105/posts/get?page=${courentPagePosts}&pageSize=${itemsPagePosts}`)
-              const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/get?page=${courentPagePosts}&pageSize=${itemsPagePosts}`)
+    const handleSearch = () => {
+      setFilteredPosts([]);
+      setFilteredUsers([]);
 
-              const dataPosts = await response.json()
+      if (inputText) {
+        const filteredPosts = posts.filter((post) =>
+          post.title.toLowerCase().includes(inputText.toLowerCase())
+        );
+  
+        const filteredUsers = users.filter((user) =>
+          user.name.toLowerCase().includes(inputText.toLowerCase())
+        );
+        console.log(filteredPosts, filteredUsers);
+  
+        setFilteredPosts(filteredPosts);
+        setFilteredUsers(filteredUsers);
+      } 
+    };
+    
+    const getPosts = async ()=>{
 
-              setPosts(dataPosts.posts);
-              setTotalPagesPosts(dataPosts.totalPages)
-
-              setTimeout(() => {
-                setIsLoading(false); 
-              }, 300);
-
-          } catch (e) {
-            console.error('Errore nella fetch:', e);
-          }
-      }
-
-      const getUsers = async () => {
         setIsLoading(true); 
-          try {
-            // const response = await fetch(`http://localhost:2105/users/get?page=${courentPageUsers}&pageSize=${itemsPageUsers}`);
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/get?page=${courentPageUsers}&pageSize=${itemsPageUsers}`);
-            const dataUsers = await response.json();
+        try {
+            // const response = await fetch(`http://localhost:2105/posts/get?page=${courentPagePosts}&pageSize=${itemsPagePosts}`)
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/get?page=${courentPagePosts}&pageSize=${itemsPagePosts}`)
 
-            setUsers(dataUsers.users); 
-            setTotalPagesUsers(dataUsers.totalPages)
+            const dataPosts = await response.json()
+
+            setPosts(dataPosts.posts);
+            setTotalPagesPosts(dataPosts.totalPages)
 
             setTimeout(() => {
               setIsLoading(false); 
-            }, 300); 
-          } catch (e) {
-            console.error('Errore nella fetch:', e);
-          }
-      };
+            }, 300);
 
-      const deletePost = async (postId) => {
-        
-        setIsLoading(true); 
-        const confirmDelete = window.confirm('Sei sicuro di voler cancellare questo utente?');
-
-        if (!confirmDelete) {
-          window.location.reload()
-          return;
-        }
-
-
-        try {
-          await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/delete/${postId}`, {
-            method: 'DELETE',
-          });
-    
-          window.location.reload()
-          setTimeout(() => {
-            setIsLoading(false); 
-          }, 300);
         } catch (e) {
-          console.error('Errore nella cancellazione del post:', e);
+          console.error('Errore nella fetch:', e);
         }
+    }
 
-      };
-
-      const deleteUser = async (userId) => {
-
-        setIsLoading(true); 
-        const confirmDelete = window.confirm('Sei sicuro di voler cancellare questo utente?');
-
-        if (!confirmDelete) {
-          setTimeout(() => {
-            setIsLoading(false); 
-          }, 300);
-          return;
-        }
-
+    const getUsers = async () => {
+      setIsLoading(true); 
         try {
-          await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/delete/${userId}`, {
-            method: 'DELETE',
-          });
-    
-          window.location.reload()
+          // const response = await fetch(`http://localhost:2105/users/get?page=${courentPageUsers}&pageSize=${itemsPageUsers}`);
+          const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/get?page=${courentPageUsers}&pageSize=${itemsPageUsers}`);
+          const dataUsers = await response.json();
+
+          setUsers(dataUsers.users); 
+          setTotalPagesUsers(dataUsers.totalPages)
+
           setTimeout(() => {
             setIsLoading(false); 
-          }, 300);
+          }, 300); 
         } catch (e) {
-          console.error('Errore nella cancellazione del post:', e);
+          console.error('Errore nella fetch:', e);
         }
-        getUsers()
+    };
 
-      };
+    const deletePost = async (postId) => {
+      
+      setIsLoading(true); 
+      const confirmDelete = window.confirm('Sei sicuro di voler cancellare questo utente?');
 
-      const handlePaginationPosts = (value)=>{
-        setCourentPagePosts(value);
-      }
-      const handlePaginationUsers = (value)=>{
-        setCourentPageUsers(value);
+      if (!confirmDelete) {
+        setTimeout(() => {
+          setIsLoading(false); 
+        }, 300);
+        return;
       }
 
-      useEffect(() => {
-        getPosts();
-        getUsers();
-      }, [courentPagePosts, itemsPagePosts,courentPageUsers,
-        itemsPageUsers]);
+
+      try {
+        await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/delete/${postId}`, {
+          method: 'DELETE',
+        });
+  
+        setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+        setTimeout(() => {
+          setIsLoading(false); 
+        }, 300);
+      } catch (e) {
+        console.error('Errore nella cancellazione del post:', e);
+      }
+
+    };
+
+    const deleteUser = async (userId) => {
+
+      setIsLoading(true); 
+      const confirmDelete = window.confirm('Sei sicuro di voler cancellare questo utente?');
+
+      if (!confirmDelete) {
+        setTimeout(() => {
+          setIsLoading(false); 
+        }, 300);
+        return;
+      }
+
+      try {
+        await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/delete/${userId}`, {
+          method: 'DELETE',
+        });
+  
+        setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+        setTimeout(() => {
+          setIsLoading(false); 
+        }, 300);
+      } catch (e) {
+        console.error('Errore nella cancellazione del post:', e);
+      }
+      getUsers()
+
+    };
+
+    const handlePaginationPosts = (value)=>{
+      setCourentPagePosts(value);
+    }
+    
+    const handlePaginationUsers = (value)=>{
+      setCourentPageUsers(value);
+    }
+
+    useEffect(() => {
+      getPosts();
+      getUsers();
+      handleSearch();
+    }, [courentPagePosts, itemsPagePosts,courentPageUsers,
+      itemsPageUsers]);
 
     return(
       <>
@@ -144,6 +176,41 @@ const LatestPosts = ()=>{
               </div>
           ) : (
             <>
+
+            {/* search section */}
+            <div className='bg-dark px-5 p-2'>
+              <Form className="d-flex w-25">
+                <Form.Control
+                  type="search"
+                  placeholder="Search"
+                  className="me-2 bg-dark text-white"
+                  aria-label="Search"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                />
+                <Button variant="outline-success" onClick={handleSearch}>
+                  Search
+                </Button>
+              </Form>
+                <div className='d-flex justify-content-around m-3'>
+
+                  {filteredPosts.map((postFiltered) => (
+                    <div className="cards p-5" key={postFiltered._id}>
+                      <Card post={postFiltered} />
+                        <div className='d-flex'>
+                        </div>
+                    </div>
+                  ))}
+
+                  {filteredUsers.map((userFiltered) => (
+                    <div className="cards p-5" key={userFiltered._id}>
+                      <UserCard user={userFiltered} />
+                        <div className='d-flex'>
+                        </div>
+                    </div>
+                  ))}
+                </div>
+            </div>
 
             {/* add post/user */}
               <div className='button-add-container'>
@@ -185,11 +252,14 @@ const LatestPosts = ()=>{
                   {users.map((user) => (
                   <div className="cards" key={user._id}>
                       <UserCard user={user} />
-                      <div className='d-flex'>
+                      <div className='cancella-modifica-post'>
+
                         <Button className='m-2' variant='danger' onClick={() => deleteUser(user._id)}>Cancella</Button>
+
                         <Link to={`/modificaUser/${user._id}`}>
                           <Button className='m-2' variant='success'>Modifica</Button>
                         </Link>
+                        
                       </div>
                   </div>
                   ))}

@@ -4,7 +4,11 @@ GET http://localhost:2105/posts/get
 #####
 
 # get by Id POSTS
-GET http://localhost:2105/posts/get/65171da5877f4f0522878e71
+GET http://localhost:2105/posts/get/652981b9de5fc79e33b5bcfc
+#####
+
+# get by title
+GET http://localhost:2105/posts/get/bytitle?title=titolo
 #####
 
 # post POSTS
@@ -63,9 +67,10 @@ Content-Type: application/json
 {
     "name": "10",
     "lastName": "3",
-    "email": "celegabor@gmail.com",
+    "email": "celegabor@yahoo.it",
     "dob": 21,
-    "avatar": "https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-2048x1949-pq9uiebg.png"
+    "avatar": "https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-2048x1949-pq9uiebg.png",
+    "password": "ciao"
 }
 ####
 
@@ -110,4 +115,32 @@ Content-Type: application/json
     "password": "password"
 }
 
+#####
 
+# 
+GET http://localhost:2105/comment/get
+#####
+
+
+####
+
+POST http://localhost:2105/posts/652ac6a90f054112b8f56f50/comment/post HTTP/1.1
+Content-Type: application/json
+
+{
+    "comment": "6",
+    "author": "65295dc09c0a5451ba8293d2"
+}
+
+####
+
+PUT http://localhost:2105/comment/put/652e7b5b53933f6b93afc19b HTTP/1.1
+Content-Type: application/json
+
+{
+    "comment": "commento modificatoewgfdasdacs",
+    "author": "652964141b101dbbbc61e18f"
+}
+####
+
+DELETE http://localhost:2105/comment/delete/652e7000ec058f75f1acb6aa

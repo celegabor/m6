@@ -12,7 +12,7 @@ const PostsSchema = new mongoose.Schema({
     },
     cover:{
         type: String,
-        required: true,
+        required: false,
     },
     readTime:{
         value: {

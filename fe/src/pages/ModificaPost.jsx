@@ -7,9 +7,6 @@ import { Link } from 'react-router-dom';
 import NavbarElement from '../components/navbar/navbar';
 import FooterElement from '../components/footer/Footer';
 import Spinner from 'react-bootstrap/Spinner';
-
-
-
 import './modificaPost.css'
 
 
@@ -19,9 +16,10 @@ const ModificaPost = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();  
   const [message, setMessage] = useState('');
+  const [file, setFile] = useState(null);
   const [postData, setPostData] = useState({
     category:'',
-    cover:'',
+    // cover:'',
     title: '',
     author:'',
     readTime:{
@@ -30,6 +28,26 @@ const ModificaPost = () => {
     }
   });
 
+  const onChangeSetFile = (e) => {
+    setFile(e.target.files[0]);
+  }
+  
+  const uploadFile = async (cover) => {
+    const fileData = new FormData();
+    fileData.append('cover', cover);
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/post/upload`, {
+        method: "POST",
+        body: fileData
+      });
+      return await response.json();
+    } catch (error) {
+      console.log("Errore durante il caricamento del file:", error);
+      throw error;
+    }
+  }
+  
   useEffect(() => {
     const fetchPostData = async () => {
       setIsLoading(true); 
@@ -67,14 +85,23 @@ const ModificaPost = () => {
     setIsLoading(true); 
 
     try {
-      
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/put/${id}`, {
-        method: 'PUT',
-        headers: {
-        "Content-Type": "application/json",
-      },
-        body: JSON.stringify(postData),
-      });
+        // Carica il file se è stato selezionato
+        let coverUrl = postData.cover;
+        if (file) {
+          const uploadCover = await uploadFile(file);
+          coverUrl = uploadCover.img;
+        }
+    
+        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/put/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...postData,
+            cover: coverUrl,
+          }),
+        });
       console.log(postData);
 
       if (!response.ok) {
@@ -197,7 +224,7 @@ const ModificaPost = () => {
                   </Form.Group>
     
                   {/* cover */}
-                  <Form.Group className='elementsForm' as={Col} controlId="validationCustomUsername">
+                  {/* <Form.Group className='elementsForm' as={Col} controlId="validationCustomUsername">
                     <Form.Label>cover</Form.Label>
                       <Form.Control
                         type="text"
@@ -209,7 +236,18 @@ const ModificaPost = () => {
                       />
                     <Form.Control.Feedback>cover valida!</Form.Control.Feedback>
                   </Form.Group>
-    
+     */}
+
+                  <Form.Group className='elementsForm' as={Col} controlId="cover">
+                    <Form.Label>Copertina (URL o File)</Form.Label>
+                    <Form.Control
+                      type="file"
+                      name="cover"
+                      onChange={onChangeSetFile}
+                    />
+                  </Form.Group>
+
+
                   {/* readtime value */}
                   <Form.Group className='elementsForm' as={Col} controlId="validationCustomUsername">
                     <Form.Label>valore</Form.Label>

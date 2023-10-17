@@ -26,12 +26,13 @@ login.post('/login', async(req, res)=>{
 
     // token
     const token = jwt.sign({
+        id: user._id,
         name: user.name,
         lastName: user.lastName,
         email: user.email,
         dob: user.dob
     }, process.env.JWT_SECRET,{
-        expiresIn: '24h'
+        expiresIn: '1m'
     })
 
     res.header('Authorization', token).status(200).send({

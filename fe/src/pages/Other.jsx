@@ -2,6 +2,7 @@ import React from "react";
 import './other.css'
 
 const Other = ()=>{
+
     return(
         <>
             <section className="container-error">

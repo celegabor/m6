@@ -1,10 +1,16 @@
 import React,{ useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './login.css'
+import Button from 'react-bootstrap/Button';
+
 
 function Login() {
 
     const [loginData, setLoginData] = useState({})
     const [login, setLogin] = useState(null)
+    const [error, setError] = useState(false)
+
+    const navigate = useNavigate();
 
     const handleInputChange = (e) =>{
         const {name, value} = e.target;
@@ -29,7 +35,12 @@ function Login() {
             const data = await response.json()
 
             if(data.token){
-                localStorage.setItem('loggedInUser', JSON.stringify(data.token))
+                setError(false)
+                localStorage.setItem('loggedInUser', JSON.stringify(data.token));
+                navigate('/home');
+                console.log('vado a home');
+            } else {
+                setError(true)
             }
 
             setLogin(data)
@@ -38,6 +49,11 @@ function Login() {
             console.log(e);
         }
     }
+
+    const redirectHandler = ()=>{
+        window.location.href = `${process.env.REACT_APP_SERVER_BASE_URL}/auth/github`
+    }
+    
 
   return (
     <>
@@ -58,9 +74,11 @@ function Login() {
                 onChange={handleInputChange}
                 />
 
-                <button className='button-login'>accedi</button>
+                <button className='button-login' type="submit">accedi</button>
+
             </form>
-        
+            {error && <i className='error-custom'>..ops..password o email errate!!</i> }
+                <Button onClick={()=>redirectHandler()} className='w-25 mt-5 p-1 bg-dark text-white'>login with GitHub</Button>
         </div>    
     </>
 

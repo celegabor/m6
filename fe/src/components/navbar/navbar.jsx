@@ -4,12 +4,24 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import React, { useEffect, useState } from 'react';
+
+import './navbar.css'
 
 function NavScrollExample() {
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = () => {
+    console.log('Ricerca:', searchQuery);
+  };
+
   return (
     <Navbar expand="lg" bg="dark" data-bs-theme="dark">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        <Navbar.Brand href="#">
+          <img className='logo' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd39tQpOa_ZYy6KkWTebn-36B0Jr6fAgoBVw&usqp=CAU" alt="" />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -29,19 +41,8 @@ function NavScrollExample() {
                 Something else here
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
+            
           </Nav>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-success">Search</Button>
-          </Form>
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -18,10 +18,18 @@
     min-width: 250px;
 }
 
-.user-detail p{
-    background-color: black;
-    padding: 0.3em 0;
-    width: 80%;
+.user-details{
+    height: 120%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.user-details p{
+    background-color: rgba(0, 0, 0);
+    padding: 0.3em 1em;
+    width: 100%;
     text-align: center;
     border-radius: 10px;
     filter: drop-shadow(0 0 10px black);
@@ -31,11 +39,12 @@
 .user-detail img{
     padding: 0.2em;
     background-color: black;
-    width: 60%;
-    height: 45%;
+    height: 40%;
+    width: 100%;
     border: 7px double white;
     filter: drop-shadow(0 0 8px black);
     margin-bottom: 15px;
+    object-fit: contain;
 }
 
 .button-details-user-out, .button-details-user-in{
@@ -49,4 +58,32 @@
 }
 .button-details-user-in{
     z-index: 12;
+}
+
+.not-user{
+    background-color: black;
+    color: red;
+    border: 10px double rgb(225, 30, 30);
+    filter: grayscale(0.4);
+    width: 100%;
+    padding: 2em;
+    font-size: 1.2em;
+    font-weight: bolder;
+    text-decoration: underline;
+}
+
+.comment.custom{
+    display: flex;
+    flex-direction: row;
+}
+
+.img-comments{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+.comments-section{
+    width: 100%;
 }
