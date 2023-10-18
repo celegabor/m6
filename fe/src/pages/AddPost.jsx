@@ -31,6 +31,10 @@ const AddPost = () => {
     content: ''
   });
 
+  // Recupera il token dalla memoria locale
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+
+
   const onChangeSetFile = (e) =>{
     setFile(e.target.files[0])
   }
@@ -40,7 +44,10 @@ const AddPost = () => {
     fileData.append('cover', cover)
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/post/upload`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/post/cloudUpload`, {
+        headers:{
+          'Authorization': token,
+        },
         method: "POST",
         body: fileData
       })
@@ -89,7 +96,7 @@ const AddPost = () => {
           },
           body: JSON.stringify({
               ...postData,
-              cover: uploadCover.img,
+              cover: uploadCover.cover,
               readTime: {
                   ...postData.readTime,
                   value: valueAsNumber, 
@@ -173,7 +180,7 @@ const AddPost = () => {
                   type="text"
                   name="category"
                   placeholder="Categoria"
-                  value={postData.category}
+                  value={postData.category || ''}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -196,7 +203,7 @@ const AddPost = () => {
                   type="text"
                   name="title"
                   placeholder="Titolo"
-                  value={postData.title}
+                  value={postData.title || ''}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -207,7 +214,7 @@ const AddPost = () => {
                     type="text"
                     name="author" 
                     placeholder="Id Autore"
-                    value={postData.author}
+                    value={postData.author || ''}
                     onChange={handleChange}
                 />
                 </Form.Group>
@@ -218,7 +225,7 @@ const AddPost = () => {
                   type="text"
                   name="readTime.value"
                   placeholder="Tempo di Lettura Valore"
-                  value={postData.readTime.value}
+                  value={postData.readTime.value || ''}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -229,7 +236,7 @@ const AddPost = () => {
                     type="text"
                     name="readTime.unit"
                     placeholder="Tempo di Lettura Unità"
-                    value={postData.readTime.unit} 
+                    value={postData.readTime.unit || ''} 
                     onChange={handleChange}
                 />
                 </Form.Group>
@@ -240,7 +247,7 @@ const AddPost = () => {
                     type="text"
                     name="content"
                     placeholder="content"
-                    value={postData.content} 
+                    value={postData.content || ''} 
                     onChange={handleChange}
                 />
                 </Form.Group>

@@ -22,12 +22,21 @@ const ModificaUser = () => {
     email: '',
   });
 
+  // Recupera il token dalla memoria locale
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+
+
   useEffect(() => {
     const fetchPostData = async () => {
       setIsLoading(true); 
 
       try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/get/${id}`);
+        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/get/${id}`,{
+          headers:{
+            'Authorization': token,
+          }
+        });
+        
         const data = await response.json();
 
         setUserData({
@@ -176,7 +185,7 @@ const ModificaUser = () => {
                   <Form.Group className='elementsForm' as={Col} controlId="validationCustomUsername">
                     <Form.Label>dob</Form.Label>
                       <Form.Control
-                        type="text"
+                        type="date"
                         name="dob"
                         placeholder="dob"
                         required

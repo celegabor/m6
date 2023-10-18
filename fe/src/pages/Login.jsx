@@ -2,6 +2,7 @@ import React,{ useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './login.css'
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 
 function Login() {
@@ -79,7 +80,13 @@ function Login() {
             </form>
             {error && <i className='error-custom'>..ops..password o email errate!!</i> }
                 <Button onClick={()=>redirectHandler()} className='w-25 mt-5 p-1 bg-dark text-white'>login with GitHub</Button>
-        </div>    
+                <p className='w-100 text-center m-3'>oppure schiaccia qua per</p>
+
+            <Link to={`/addUser`}>
+                <p className='' variant="success"> aggiungere un nuovo UTENTE</p>
+            </Link>
+        
+        </div>
     </>
 
   )

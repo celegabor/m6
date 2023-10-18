@@ -100,8 +100,8 @@ POST http://localhost:2105/send-email HTTP/1.1
 Content-Type: application/json
 
 {
-    "subject": "email1",
-    "text": "testo messaggio"
+    "subject": "email funziona",
+    "text": "testo messaggio che funziona"
 }
 ####
 

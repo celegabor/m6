@@ -28,6 +28,9 @@ const ModificaPost = () => {
     }
   });
 
+  // Recupera il token dalla memoria locale
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+
   const onChangeSetFile = (e) => {
     setFile(e.target.files[0]);
   }
@@ -38,6 +41,9 @@ const ModificaPost = () => {
   
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/post/upload`, {
+        headers:{
+          'Authorization': token,
+        },
         method: "POST",
         body: fileData
       });
@@ -53,7 +59,11 @@ const ModificaPost = () => {
       setIsLoading(true); 
 
       try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/get/${id}`);
+        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/get/${id}`,{
+          headers:{
+            'Authorization': token,
+          }
+        });
         const data = await response.json();
 
         setPostData({
@@ -96,6 +106,7 @@ const ModificaPost = () => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': token,
           },
           body: JSON.stringify({
             ...postData,
@@ -236,7 +247,7 @@ const ModificaPost = () => {
                       />
                     <Form.Control.Feedback>cover valida!</Form.Control.Feedback>
                   </Form.Group>
-     */}
+                  */}
 
                   <Form.Group className='elementsForm' as={Col} controlId="cover">
                     <Form.Label>Copertina (URL o File)</Form.Label>

@@ -29,7 +29,8 @@ const LatestPosts = ()=>{
     const [filteredPosts, setFilteredPosts] = useState([]); 
     const [filteredUsers, setFilteredUsers] = useState([]); 
   
-    
+     // Recupera il token dalla memoria locale
+     const token = JSON.parse(localStorage.getItem('loggedInUser'))
 
     const session = useSession()
 
@@ -45,7 +46,6 @@ const LatestPosts = ()=>{
         const filteredUsers = users.filter((user) =>
           user.name.toLowerCase().includes(inputText.toLowerCase())
         );
-        console.log(filteredPosts, filteredUsers);
   
         setFilteredPosts(filteredPosts);
         setFilteredUsers(filteredUsers);
@@ -54,30 +54,41 @@ const LatestPosts = ()=>{
     
     const getPosts = async ()=>{
 
+      
+
         setIsLoading(true); 
-        try {
-            // const response = await fetch(`http://localhost:2105/posts/get?page=${courentPagePosts}&pageSize=${itemsPagePosts}`)
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/get?page=${courentPagePosts}&pageSize=${itemsPagePosts}`)
+        
+      try {
+          const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/get?page=${courentPagePosts}&pageSize=${itemsPagePosts}`,{
+            headers:{
+              'Authorization': token,
+            }
+          })
 
-            const dataPosts = await response.json()
+          const dataPosts = await response.json()
 
-            setPosts(dataPosts.posts);
-            setTotalPagesPosts(dataPosts.totalPages)
+          setPosts(dataPosts.posts);
+          setTotalPagesPosts(dataPosts.totalPages)
 
-            setTimeout(() => {
-              setIsLoading(false); 
-            }, 300);
+          setTimeout(() => {
+            setIsLoading(false); 
+          }, 300);
 
-        } catch (e) {
-          console.error('Errore nella fetch:', e);
-        }
+      } catch (e) {
+        console.error('Errore nella fetch:', e);
+      }
     }
 
     const getUsers = async () => {
       setIsLoading(true); 
         try {
-          // const response = await fetch(`http://localhost:2105/users/get?page=${courentPageUsers}&pageSize=${itemsPageUsers}`);
-          const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/get?page=${courentPageUsers}&pageSize=${itemsPageUsers}`);
+          
+          const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/get?page=${courentPageUsers}&pageSize=${itemsPageUsers}`,{
+            headers:{
+              'Authorization': token,
+            }
+          });
+
           const dataUsers = await response.json();
 
           setUsers(dataUsers.users); 
@@ -102,10 +113,12 @@ const LatestPosts = ()=>{
         }, 300);
         return;
       }
-
-
+      
       try {
         await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/delete/${postId}`, {
+          headers:{
+            'Authorization': token,
+          },
           method: 'DELETE',
         });
   
@@ -133,9 +146,12 @@ const LatestPosts = ()=>{
 
       try {
         await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/delete/${userId}`, {
+          headers:{
+            'Authorization': token,
+          },
           method: 'DELETE',
         });
-  
+        
         setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
         setTimeout(() => {
           setIsLoading(false); 
@@ -213,29 +229,42 @@ const LatestPosts = ()=>{
             </div>
 
             {/* add post/user */}
+            {token && 
               <div className='button-add-container'>
-                <Link to={`/addUser`}>
-                  <Button className='button-add' variant="success">aggiungi un nuovo UTENTE</Button>
-                </Link>
-                <Link to={`/addPost`}>
-                  <Button className='button-add' variant="secondary">aggiungi un nuovo POST</Button>
+                <Link className='w-75' to={`/addPost`}>
+                  <Button className='button-add w-100' variant="dark">aggiungi un nuovo POST</Button>
                 </Link>
               </div>
+            }
 
             {/* post */}
-              <h1>posts</h1>
               <div className="user-list">
-                  {posts.map((post) => (
-                  <div className="cards" key={post._id}>
-                      <Card post={post} />
-                      <div className='d-flex'>
-                        <Button className='m-2' variant='danger' onClick={() => deletePost(post._id)}>Cancella</Button>
-                        <Link to={`/modificaPost/${post._id}`}>
-                          <Button className='m-2' variant='success'>Modifica</Button>
-                        </Link>
-                      </div>
-                  </div>
-                  ))}
+                {posts ? (
+                  <>
+                    <h1>posts</h1>
+                    {posts.map((post) => (
+                    <div className="cards" key={post._id}>
+                        <Card post={post} />
+                        <div className='d-flex'>
+                          <Button className='m-2' variant='danger' onClick={() => deletePost(post._id)}>Cancella</Button>
+                          <Link to={`/modificaPost/${post._id}`}>
+                            <Button className='m-2' variant='success'>Modifica</Button>
+                          </Link>
+                        </div>
+                    </div>
+                    ))}
+                  </>
+                  ) : (
+                    <>
+                    <h1 className='bg-danger text-white p-3 m-4'>ATTENZIONE !!! ATTENZIONE !!!</h1>
+                    <h1 className='bg-warning text-white p-3 m-4'>CREDENZIALI SCADUTE O NON VALIDE. </h1>
+                    <h1 className='bg-danger text-white p-3 m-4'>DEVI EFFETTUARE NUOVAMENTE IL LOGIN. CLICCA QUA PER ACCEDERE NUOVAMENTE:</h1>
+                    <Link className='w-100 m-4 d-flex justify-content-center' to={`/`}>
+                      <Button className='w-50' variant="warning">clicca qua</Button>
+                    </Link>
+                  </>
+
+                  )}
               </div>
               <div className='pagination-container'>
                 <ResponsivePagination
@@ -247,22 +276,29 @@ const LatestPosts = ()=>{
               {/* -------------------------- */}
 
             {/* users */}
-              <h1>users</h1>
               <div className="user-list">
-                  {users.map((user) => (
-                  <div className="cards" key={user._id}>
-                      <UserCard user={user} />
-                      <div className='cancella-modifica-post'>
+                {users? ( 
+                  <>
+                    <h1>users</h1>
+                    {users.map((user) => (
+                      <div className="cards" key={user._id}>
+                          <UserCard user={user} />
+                          <div className='cancella-modifica-post'>
 
-                        <Button className='m-2' variant='danger' onClick={() => deleteUser(user._id)}>Cancella</Button>
+                            <Button className='m-2' variant='danger' onClick={() => deleteUser(user._id)}>Cancella</Button>
 
-                        <Link to={`/modificaUser/${user._id}`}>
-                          <Button className='m-2' variant='success'>Modifica</Button>
-                        </Link>
-                        
+                            <Link to={`/modificaUser/${user._id}`}>
+                              <Button className='m-2' variant='success'>Modifica</Button>
+                            </Link>
+                            
+                          </div>
                       </div>
-                  </div>
-                  ))}
+                    ))}
+                  </>
+
+                ) : (
+                  null
+                )}
               </div>
               <div className='pagination-container'>
                 <ResponsivePagination

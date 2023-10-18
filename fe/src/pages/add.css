@@ -3,3 +3,16 @@
     background-color: black;
     color: white;
 }
+
+.success-message-put-user{
+    position: fixed;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    background-color: rgb(24, 194, 24);
+    color: black;
+    text-align: center;
+    border: 20px double black;
+    font-size: 3em;
+    padding: 1em;
+}

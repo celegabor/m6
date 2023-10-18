@@ -2,12 +2,21 @@ const express = require('express')
 const { createTransport } = require('nodemailer')
 const email = express.Router()
 
+// const transporter = createTransport({
+//     host: 'smtp.ethereal.email',
+//     port: 587,
+//     auth: {
+//         user: 'icie.dibbert@ethereal.email',
+//         pass: 'XABWbM3dphzeV8Uyt9'
+//     }
+// });
+
 const transporter = createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: 'hubert30@ethereal.email',
-        pass: 'essTGcDwm7egMnPNsa'
+        user: 'judson.schumm@ethereal.email',
+        pass: 'JnUkZjmGXEASznUV6u'
     }
 });
 
@@ -16,7 +25,7 @@ email.post('/send-email', async(req, res)=>{
 
     const mailOptions = {
         from: 'celegabor@gmail.com',
-        to: 'celegabor@gmail.com',
+        to: 'judson.schumm@ethereal.email',
         subject,
         text
     }

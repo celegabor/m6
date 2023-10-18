@@ -16,10 +16,10 @@ const App = ()=>{
       <Routes>
 
         <Route exact path="/" element={<Login />}/>
+        <Route path="/addUser" element={<AddUser />}/>
 
         <Route element={<ProtectedRouts/>}>
 
-          <Route path="/addUser" element={<AddUser />}/>
           <Route path="/addPost" element={<AddPost />}/>
           <Route path="/modificaPost/:id" element={<ModificaPost />}/>
           <Route path="/modificaUser/:id" element={<ModificaUser />}/>

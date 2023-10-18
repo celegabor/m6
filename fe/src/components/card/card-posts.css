@@ -72,18 +72,42 @@
     text-decoration: underline;
 }
 
-.comment.custom{
-    display: flex;
-    flex-direction: row;
-}
-
 .img-comments{
     width: 50px;
     height: 50px;
     border-radius: 50%;
     border: 1px solid white;
+    object-fit: cover;
 }
 
 .comments-section{
     width: 100%;
+}
+
+.comment{
+    background-color: black;
+    padding: 0.5em;
+    margin: 20px;
+    border-radius: 20px;
+}
+
+.commento{
+    padding: 0.3em 2em;
+    width: 50%;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.button{
+    position: absolute;
+    right: 0;
+} 
+
+.input-add-custom{
+    width: 100%;
+    padding: 0.5em;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid white;
 }

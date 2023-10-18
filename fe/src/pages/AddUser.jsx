@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import NavbarElement from '../components/navbar/navbar';
 import FooterElement from '../components/footer/Footer';
 import Spinner from 'react-bootstrap/Spinner';
+import { Navigate } from 'react-router-dom'; 
+
 import './add.css'
 
 
@@ -23,6 +25,7 @@ const AddUser = () => {
     email: '',
     password: ''
   });
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -31,6 +34,7 @@ const AddUser = () => {
       [name]: value,
     });
   };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,16 +72,20 @@ const AddUser = () => {
           email: '',
           password: ''
         });
-        setMessage('Complimenti!!! Il caricamento è andato a buon fine !!!!!');
+        setMessage('Complimenti!!! Utente creato correttamente !!!! Adesso devi fare il login nuovamente...');
         setTimeout(() => {
           setMessage('');
-        }, 2500);
-        
+          setIsSuccessful(true);
+        }, 3000);
+       
       } else {
         setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!');
         setTimeout(() => {
           setMessage('');
-        }, 2500);
+          setIsSuccessful(true); 
+        }, 3000);
+
+        setIsSuccessful(true); 
       }
 
       setTimeout(() => {
@@ -105,22 +113,19 @@ const AddUser = () => {
             <p>Caricamento...</p>
         </div>
   
+      ) : isSuccessful ? ( // Se isSuccessful è true, reindirizza l'utente
+      <Navigate to="/" />
       ) : (
         <>
           <nav>
             <NavbarElement/>
           </nav>
-          
-          {/* Bottone Home */}
-          <div className="button-confirm-container">
-            <Link to={`/home`}>
-              <Button className='px-5 py-2 m-3' variant='success'>Home</Button>
-            </Link>
-          </div>
-    
+              
           <main className='add-main'>
             <h2>Aggiungi Utente</h2>
             <Form noValidate className='form-body-user'>
+
+              {/* name */}
               <Form.Group className='elementsForm' as={Col} controlId="name">
                 <Form.Label>Nome</Form.Label>
                 <Form.Control
@@ -133,6 +138,7 @@ const AddUser = () => {
                 />
               </Form.Group>
     
+              {/* lastname */}
               <Form.Group className='elementsForm' as={Col} controlId="lastName">
                 <Form.Label>Cognome</Form.Label>
                 <Form.Control
@@ -145,6 +151,7 @@ const AddUser = () => {
                 />
               </Form.Group>
     
+              {/* avatar */}
               <Form.Group className='elementsForm' as={Col} controlId="avatar">
                 <Form.Label>Avatar</Form.Label>
                 <Form.Control
@@ -156,10 +163,11 @@ const AddUser = () => {
                 />
               </Form.Group>
     
+              {/* dob */}
               <Form.Group className='elementsForm' as={Col} controlId="dob">
                 <Form.Label>Data di Nascita</Form.Label>
                 <Form.Control
-                  type= "text"
+                  type= "date"
                   name="dob"
                   placeholder="giorno del compleanno"
                   value={userData.dob}
@@ -167,6 +175,7 @@ const AddUser = () => {
                 />
               </Form.Group>
     
+              {/* email */}
               <Form.Group className='elementsForm' as={Col} controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
@@ -178,6 +187,7 @@ const AddUser = () => {
                 />
               </Form.Group>
 
+              {/* password */}
               <Form.Group className='elementsForm' as={Col} controlId="password">
                 <Form.Label>password</Form.Label>
                 <Form.Control
@@ -193,7 +203,7 @@ const AddUser = () => {
                 Aggiungi Utente
               </Button>
               <div className="message-container">
-                    {message && <div className={message.includes('NON') ? 'NOT-success-message-put' : 'success-message-put'}>{message}</div>}
+                    {message && <div className={message.includes('NON') ? 'NOT-success-message-put' : 'success-message-put-user'}>{message}</div>}
                   </div>
             </Form>
           </main>

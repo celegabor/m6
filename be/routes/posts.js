@@ -10,6 +10,7 @@ const multer = require('multer')
 const cloudinary = require('cloudinary').v2
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
 const crypto = require('crypto');
+const verifyToken = require('../middlewares/verifyToken')
 // importa dati .env (dati nascost)
 require('dotenv').config()
 
@@ -36,20 +37,24 @@ const internalStorage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
 
-        
+        // genero un suffisso unico x il file
         const uniqueSuffix = `${Date.now()}-${crypto.randomUUID()}`
+        // recupero solo l'estensione del file
         const fileExtension = file.originalname.split('.').pop()
+        // eseguo la callback creando il nome/titolo completo
         cb(null, `${file.fieldname}-${uniqueSuffix}.${fileExtension}`)
 
     }
 })
 
 const upload = multer({ storage: internalStorage })
-const cloudUpload = multer({ storage: cloudStorage })
 
 // post su pubblic sul locale
+
+// attento: cover deve essere esattamente il nome dell'input <input type="text" => => name="cover" <= <= ...ecc..
 posts.post('/posts/post/upload', upload.single('cover') ,async ( req, res ) => {
     
+    // è l'url e aggiungi l'host (http://localhost:2105)
     const url = `${req.protocol}://${req.get('host')}`
 
     try {
@@ -68,11 +73,12 @@ posts.post('/posts/post/upload', upload.single('cover') ,async ( req, res ) => {
     }
 })
 
+const cloudUpload = multer({ storage: cloudStorage })
+
 // post su cloudinary
-posts.post('/posts/post/cloudUpload', cloudUpload.single('cover'), async (req, res) => {
+posts.post('/posts/post/cloudUpload',verifyToken, cloudUpload.single('cover'), async (req, res) => {
     try {
-        const cover = req.file.path; 
-        res.status(200).json({ cover });
+        res.status(200).json({ cover: req.file.path });
     } catch (e) {
         res.status(500).send({
             statusCode: 500,
@@ -82,22 +88,38 @@ posts.post('/posts/post/cloudUpload', cloudUpload.single('cover'), async (req, r
     }
 });
 
-// posts.post('/posts/post/cloudUpload', cloudUpload.single('cover'), async(req, res) => {
-//     try {
-//         res.status(200).json({ cover: req.file.path })
-//     } catch (e) {
-//         res.status(500).send({
-//             statusCode:500,
-//             message: "errore interno del server",
-//             error: e
-//         })
-//     }
-// })
+// get che restituisce i post di un autore
+posts.get('/get/author/:authorId/posts',verifyToken, async (req, res) => {
+    const authorId = req.params.authorId;
 
+    try {
+        const postsByAuthor = await PostModel.find({ author: authorId })
+            .populate('author')
+            .exec();
 
+        if (!postsByAuthor || postsByAuthor.length === 0) {
+            return res.status(404).send({
+                statusCode: 404,
+                message: "Nessun post trovato per questo autore."
+            });
+        }
+
+        res.status(200).send({
+            statusCode: 200,
+            authorId: authorId,
+            posts: postsByAuthor
+        });
+    } catch (e) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "Errore interno del server",
+            error: e
+        });
+    }
+});
 
 // get
-posts.get('/posts/get', async (req, res) => {
+posts.get('/posts/get',verifyToken , async (req, res) => {
 
     // dichiaro la quantità di articoli da vedere x pag, poi gestisco la cosa quando faccio la get gestendo il num della pag. volendo posso modificare la pageSize
     const{ page = 1, pageSize = 10} = req.query
@@ -117,7 +139,7 @@ posts.get('/posts/get', async (req, res) => {
             courentPage: Number(page),
             totalPages: Math.ceil(totalPosts / pageSize ),//ceil da numeri interi
             totalPosts,
-            posts
+            posts,
         })
     } catch (e) {
         res.status(500).send({
@@ -129,7 +151,7 @@ posts.get('/posts/get', async (req, res) => {
 });
 
 // get by Id
-posts.get('/posts/get/:postId' , async (req, res) => {
+posts.get('/posts/get/:postId',verifyToken , async (req, res) => {
     const { postId } = req.params;
 
     try {
@@ -155,7 +177,7 @@ posts.get('/posts/get/:postId' , async (req, res) => {
 });
 
 // get by title
-posts.get('/posts/get/bytitle', async (req, res) => {
+posts.get('/posts/get/bytitle',verifyToken, async (req, res) => {
     const { title } = req.query;
 
     try {
@@ -178,7 +200,7 @@ posts.get('/posts/get/bytitle', async (req, res) => {
 });
 
 // get by date
-posts.get('/posts/get/:date', async (req, res)=>{
+posts.get('/posts/get/:date',verifyToken, async (req, res)=>{
     const { date } = req.params
 
     try {
@@ -225,7 +247,7 @@ posts.get('/posts/get/:date', async (req, res)=>{
 })
 
 // post
-posts.post('/posts/post', validatePost, async (req, res)=>{
+posts.post('/posts/post',verifyToken, validatePost, async (req, res)=>{
 
     const newPost = new PostModel({
         title: req.body.title,
@@ -293,9 +315,34 @@ posts.put('/posts/put/:postId', async (req, res)=>{
     }
 });
 
+// put per caricare un'immagine di copertina (cover) in Cloudinary per un post specifico
+posts.put('/posts/:postId/cover', cloudUpload.single('cover'), async (req, res) => {
+    const postId = req.params.postId;
+
+    try {
+        if (req.file) {
+            res.status(200).json({
+                statusCode: 200,
+                message: "Immagine di copertina caricata con successo",
+                coverUrl: req.file.path
+            });
+        } else {
+            res.status(400).json({
+                statusCode: 400,
+                message: "Caricamento dell'immagine di copertina non riuscito"
+            });
+        }
+    } catch (e) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "Errore interno del server",
+            error: e
+        });
+    }
+});
 
 // delete
-posts.delete('/posts/delete/:postId', async (req, res)=>{
+posts.delete('/posts/delete/:postId',verifyToken, async (req, res)=>{
     const { postId } = req.params;
 
     try {

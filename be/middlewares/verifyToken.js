@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 module.exports = function(req, res, next){
+    // prendiamo in token dall'header
     const token = req.header('Authorization')
 
     if(!token){
@@ -12,6 +13,7 @@ module.exports = function(req, res, next){
     }
 
     try {
+        // verifichiamo il token tramite JWT_SECRET
         const verified = jwt.verify(token, process.env.JWT_SECRET)
         req.user = verified
 

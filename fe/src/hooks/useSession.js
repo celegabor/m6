@@ -10,6 +10,7 @@ const useSession = ()=>{
 
     const navigate = useNavigate()
 
+    // controllo per vedere quando il token scade
     const checkTokenExpirationTime = ()=>{
         if(session.exp){
             const convertUnixDateToMillisecond = decodedSession.exp * 1000
