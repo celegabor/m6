@@ -56,3 +56,15 @@
     border-radius: 40px;
     border-bottom-left-radius: 0px;
 }
+
+.custom-login-width{
+    height: 70px;
+
+}
+
+.custom-login-width img{
+    height: 50px;
+    width: 50px;
+    margin: 0 010px;
+    border-radius: 50%;
+}

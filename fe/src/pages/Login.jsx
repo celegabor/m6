@@ -84,9 +84,16 @@ function Login() {
             {error && <i className='error-custom'>..ops..password o email errate!!</i> }
 
 
-                <Button onClick={()=>redirectHandlerGitHub()} className='w-25 mt-5 p-1 bg-dark text-white'>login with GitHub</Button>
+                <Button onClick={()=>redirectHandlerGitHub()} className='custom-login-width w-25 mt-5 p-1 bg-dark text-white'>
+                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="logo gitHub" />
+                    login with GitHub
+                </Button>
 
-                <Button onClick={()=>redirectHandlerGoogle()} className='w-25 mt-5 p-1 bg-dark text-white'>login with Google che non funziona</Button>
+                <Button onClick={()=>redirectHandlerGoogle()} className='custom-login-width w-25 mt-5 p-1 bg-dark text-white'>
+                    <img src="https://play-lh.googleusercontent.com/6UgEjh8Xuts4nwdWzTnWH8QtLuHqRMUB7dp24JYVE2xcYzq4HA8hFfcAbU-R-PC_9uA1=s94-rw" alt="logo google" />
+                    login with Google 
+                    <p className='text-danger'>non funziona login con google</p>
+                </Button>
 
                 
                 <p className='w-100 text-center m-3'>oppure schiaccia qua per</p>
