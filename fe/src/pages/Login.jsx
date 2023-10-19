@@ -51,8 +51,11 @@ function Login() {
         }
     }
 
-    const redirectHandler = ()=>{
+    const redirectHandlerGitHub = ()=>{
         window.location.href = `${process.env.REACT_APP_SERVER_BASE_URL}/auth/github`
+    }
+    const redirectHandlerGoogle = ()=>{
+        window.location.href = `${process.env.REACT_APP_SERVER_BASE_URL}/auth/google`
     }
     
 
@@ -79,7 +82,13 @@ function Login() {
 
             </form>
             {error && <i className='error-custom'>..ops..password o email errate!!</i> }
-                <Button onClick={()=>redirectHandler()} className='w-25 mt-5 p-1 bg-dark text-white'>login with GitHub</Button>
+
+
+                <Button onClick={()=>redirectHandlerGitHub()} className='w-25 mt-5 p-1 bg-dark text-white'>login with GitHub</Button>
+
+                <Button onClick={()=>redirectHandlerGoogle()} className='w-25 mt-5 p-1 bg-dark text-white'>login with Google che non funziona</Button>
+
+                
                 <p className='w-100 text-center m-3'>oppure schiaccia qua per</p>
 
             <Link to={`/addUser`}>

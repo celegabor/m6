@@ -7,6 +7,7 @@ import ResponsivePagination from 'react-responsive-pagination';
 import Spinner from 'react-bootstrap/Spinner';
 import useSession from "../../hooks/useSession";
 import Form from 'react-bootstrap/Form';
+import jwt_decode from "jwt-decode";
 
 
 import 'react-responsive-pagination/themes/classic.css';
@@ -29,8 +30,11 @@ const LatestPosts = ()=>{
     const [filteredPosts, setFilteredPosts] = useState([]); 
     const [filteredUsers, setFilteredUsers] = useState([]); 
   
-     // Recupera il token dalla memoria locale
-     const token = JSON.parse(localStorage.getItem('loggedInUser'))
+    //  Recupera il token dalla memoria locale
+    const token = JSON.parse(localStorage.getItem('loggedInUser'))
+    // conversione e recupero dati utente loggato
+    const tokenData = token;
+    const decoded = jwt_decode(tokenData);     
 
     const session = useSession()
 

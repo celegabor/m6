@@ -50,7 +50,7 @@ gh.get('/auth/github/callback', passport.authenticate('github', { failureRedirec
     console.log('LOG USER', user)
 
     const token = jwt.sign(user, process.env.JWT_SECRET)
-    const redirectUrl = `http://localhost:3000/success?token=${encodeURIComponent(token)}`
+    const redirectUrl = `http://localhost:3000/success/${encodeURIComponent(token)}`
     res.redirect(redirectUrl)
 })
 

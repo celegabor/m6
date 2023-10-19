@@ -7,6 +7,7 @@ const emailRoute = require('./routes/sendMail')
 const path = require('path')
 const cors = require('cors')
 const githubRoute = require('./routes/github')
+const googleRoute = require('./routes/google')
 const loginRoute = require('./routes/login')
 const commentRoute = require('./routes/commentPost')
 
@@ -33,6 +34,7 @@ app.use('/', userRoute)
 app.use('/', emailRoute)
 app.use('/', loginRoute)
 app.use('/', githubRoute)
+app.use('/', googleRoute)
 app.use('/', commentRoute)
 
 // in fase di lancio deve agganciarsi al database/ primo parametro stringa database

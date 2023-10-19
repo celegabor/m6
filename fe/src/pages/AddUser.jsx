@@ -41,12 +41,13 @@ const AddUser = () => {
 
     const dobAsNumber = parseInt(userData.dob);
 
-    if (isNaN(dobAsNumber)) {
-        setMessage('La data di nascita deve essere un numero valido');
-        setTimeout(() => {
+    // controllo vari errori
+    if (isNaN(dobAsNumber) || userData.name.length < 3 || userData.lastName.length < 3 || userData.password.length < 4 || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)) {
+      setMessage('Si sono verificati errori nei campi del modulo. Si prega di controllare i dati inseriti.');
+      setTimeout(() => {
         setMessage('');
-        }, 4000);
-        return; 
+      }, 3000);
+      return; 
     }
     setIsLoading(true); 
 
@@ -136,7 +137,11 @@ const AddUser = () => {
                   value={userData.name}
                   onChange={handleChange}
                 />
+                {userData.name.length < 3 && userData.name.length > 0 && (
+                  <div className="error-message">Il nome deve essere lungo almeno 3 caratteri.</div>
+                )}
               </Form.Group>
+
     
               {/* lastname */}
               <Form.Group className='elementsForm' as={Col} controlId="lastName">
@@ -149,12 +154,16 @@ const AddUser = () => {
                   value={userData.lastName}
                   onChange={handleChange}
                 />
+                {userData.lastName.length < 3 && userData.lastName.length > 0 && (
+                  <div className="error-message">Il cognome deve essere lungo almeno 3 caratteri.</div>
+                )}
               </Form.Group>
     
               {/* avatar */}
               <Form.Group className='elementsForm' as={Col} controlId="avatar">
                 <Form.Label>Avatar</Form.Label>
                 <Form.Control
+                  required
                   type="text"
                   name="avatar"
                   placeholder="URL dell'Avatar"
@@ -167,36 +176,48 @@ const AddUser = () => {
               <Form.Group className='elementsForm' as={Col} controlId="dob">
                 <Form.Label>Data di Nascita</Form.Label>
                 <Form.Control
-                  type= "date"
+                  required
+                  type="date"
                   name="dob"
                   placeholder="giorno del compleanno"
                   value={userData.dob}
                   onChange={handleChange}
                 />
+                {isNaN(Date.parse(userData.dob)) && userData.dob.trim() !== '' && (
+                  <div className="error-message">Inserire una data di nascita valida.</div>
+                )}
               </Form.Group>
     
               {/* email */}
               <Form.Group className='elementsForm' as={Col} controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
+                  required
                   type="email"
                   name="email"
                   placeholder="Email"
                   value={userData.email}
                   onChange={handleChange}
                 />
+                {!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(userData.email) && (
+                  <div className="error-message">Inserire un indirizzo email valido.</div>
+                )}
               </Form.Group>
 
               {/* password */}
               <Form.Group className='elementsForm' as={Col} controlId="password">
-                <Form.Label>password</Form.Label>
+                <Form.Label>Password</Form.Label>
                 <Form.Control
+                  required
                   type="password"
                   name="password"
-                  placeholder="password"
+                  placeholder="Password"
                   value={userData.password}
                   onChange={handleChange}
                 />
+                {userData.password.length < 4 && userData.password.length > 0 && (
+                  <div className="error-message">La password deve essere lunga almeno 4 caratteri.</div>
+                )}
               </Form.Group>
     
               <Button className='buttonAddComment' type="submit" onClick={handleSubmit}>

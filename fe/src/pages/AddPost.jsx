@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import NavbarElement from '../components/navbar/navbar';
 import FooterElement from '../components/footer/Footer';
 import Spinner from 'react-bootstrap/Spinner';
+import jwt_decode from "jwt-decode";
+
 import './add.css'
 
 
@@ -13,6 +15,11 @@ import './modificaPost.css'
 
 const AddPost = () => {
 
+  //  Recupera il token dalla memoria locale
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+  // conversione e recupero dati utente loggato
+  const tokenData = token;
+  const decoded = jwt_decode(tokenData); 
 
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +30,7 @@ const AddPost = () => {
     category: '',
     // cover: '',
     title: '',
-    author: '',
+    author: decoded.id,
     readTime: {
       value: null,
       unit: ''
@@ -31,8 +38,6 @@ const AddPost = () => {
     content: ''
   });
 
-  // Recupera il token dalla memoria locale
-  const token = JSON.parse(localStorage.getItem('loggedInUser'))
 
 
   const onChangeSetFile = (e) =>{
@@ -93,6 +98,7 @@ const AddPost = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': token,
           },
           body: JSON.stringify({
               ...postData,
@@ -111,7 +117,6 @@ const AddPost = () => {
           setPostData({
             category: '',
             title: '',
-            author: '',
             readTime: {
               value: null,
               unit: '',
@@ -188,6 +193,7 @@ const AddPost = () => {
               <Form.Group className='elementsForm' as={Col} controlId="cover">
                 <Form.Label>Copertina (URL)</Form.Label>
                 <Form.Control
+                  required  
                   type="file"
                   name="cover"
                   placeholder="URL della Copertina"
@@ -208,20 +214,10 @@ const AddPost = () => {
                 />
               </Form.Group>
     
-              <Form.Group className='elementsForm' as={Col} controlId="authorName">
-                <Form.Label>Autore</Form.Label>
-                <Form.Control
-                    type="text"
-                    name="author" 
-                    placeholder="Id Autore"
-                    value={postData.author || ''}
-                    onChange={handleChange}
-                />
-                </Form.Group>
-    
               <Form.Group className='elementsForm' as={Col} controlId="readTimeValue">
                 <Form.Label>Tempo di Lettura Valore</Form.Label>
                 <Form.Control
+                  required
                   type="text"
                   name="readTime.value"
                   placeholder="Tempo di Lettura Valore"
@@ -233,6 +229,7 @@ const AddPost = () => {
               <Form.Group className='elementsForm' as={Col} controlId="readTimeUnit">
                 <Form.Label>Tempo di Lettura Unità</Form.Label>
                 <Form.Control
+                    required
                     type="text"
                     name="readTime.unit"
                     placeholder="Tempo di Lettura Unità"
@@ -244,6 +241,7 @@ const AddPost = () => {
               <Form.Group className='elementsForm' as={Col}>
                 <Form.Label>Content</Form.Label>
                 <Form.Control
+                    required
                     type="text"
                     name="content"
                     placeholder="content"

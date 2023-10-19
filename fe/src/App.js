@@ -6,6 +6,8 @@ import ModificaPost from './pages/ModificaPost'
 import ModificaUser from './pages/ModificaUser'
 import AddUser from './pages/AddUser'
 import AddPost from './pages/AddPost'
+import Success from './pages/Success'
+import SuccessGoogle from './pages/SuccessGoogle'
 import Login from './pages/Login'
 import ProtectedRouts from './middlewares/ProtectedRoutes';
 
@@ -17,7 +19,8 @@ const App = ()=>{
 
         <Route exact path="/" element={<Login />}/>
         <Route path="/addUser" element={<AddUser />}/>
-
+        <Route path="/success/:token" element={<Success />}/>
+        <Route path="/successgoogle/:code" element={<SuccessGoogle />}/>
         <Route element={<ProtectedRouts/>}>
 
           <Route path="/addPost" element={<AddPost />}/>

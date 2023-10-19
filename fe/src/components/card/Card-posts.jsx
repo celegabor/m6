@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
+import jwt_decode from "jwt-decode";
+
 import './card-posts.css';
 
 const Card = ({ post }) => {
@@ -7,13 +9,14 @@ const Card = ({ post }) => {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [newUser, setNewUser] = useState('');
   const [editCommentId, setEditCommentId] = useState(null);
   const [editComment, setEditComment] = useState(false)
 
-  // Recupera il token dalla memoria locale
+  //  Recupera il token dalla memoria locale
   const token = JSON.parse(localStorage.getItem('loggedInUser'))
-
+  // conversione e recupero dati utente loggato
+  const tokenData = token;
+  const decoded = jwt_decode(tokenData);  
 
   const toggleAuthor = () => {
     setShowAuthor(!showAuthor);
@@ -59,14 +62,13 @@ const Card = ({ post }) => {
       body: JSON.stringify({
         comment: newComment,
         postId: post._id,
-        author: newUser,
+        author: decoded.id,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         getComments();
         setNewComment('');
-        setNewUser('');
       })
       .catch((error) => {
         console.error('Errore nell\'aggiunta del commento:', error);
@@ -93,13 +95,12 @@ const Card = ({ post }) => {
     const commentToEdit = comments.find((comment) => comment._id === commentId);
     setEditCommentId(commentId);
     setNewComment(commentToEdit.comment);
-    setNewUser(commentToEdit.author._id);
 
     setEditComment(true)
   };
 
   const saveEditedComment = (commentId) => {
-    if (newComment.trim() === '' || newUser.trim() === '') {
+    if (newComment.trim() === '') {
       return;
     }
 
@@ -111,7 +112,6 @@ const Card = ({ post }) => {
       },
       body: JSON.stringify({
         comment: newComment,
-        author: newUser,
       }),
     })
       .then((response) => response.json())
@@ -128,7 +128,6 @@ const Card = ({ post }) => {
   const cancelEdit = () => {
     setEditCommentId(null);
     setNewComment('');
-    setNewUser('');
     setEditComment(false)
   };
 
@@ -201,13 +200,7 @@ const Card = ({ post }) => {
                           value={newComment}
                           onChange={(e) => setNewComment(e.target.value)}
                         />
-                        {/* <input
-                          className="w-50 m-2"
-                          type="text"
-                          placeholder="Modifica l'ID utente..."
-                          value={newUser}
-                          onChange={(e) => setNewUser(e.target.value)}
-                        /> */}
+                       
                         <Button className="m-2 w-50" variant="success" onClick={() => saveEditedComment(comment._id)}>
                           Salva
                         </Button>
@@ -232,13 +225,6 @@ const Card = ({ post }) => {
                   placeholder="Aggiungi un commento..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
-                />
-                <input
-                  className="mt-2 input-add-custom"
-                  type="text"
-                  placeholder="Aggiungi un id utente..."
-                  value={newUser}
-                  onChange={(e) => setNewUser(e.target.value)}
                 />
               </div>
               <Button className="w-25 m-4" variant="primary" onClick={addComment}>
