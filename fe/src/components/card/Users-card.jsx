@@ -6,10 +6,11 @@ const UserCard = ({ user }) => {
     <>
       <div className='card-details'>
         <img src={user.avatar} alt={user.name} />
-        <h5> name: {user.name}</h5>
-        <h5>LastName: {user.lastName}</h5>
-        <p>Email: {user.email}</p>
-        <p>Data di nascita: {user.dob}</p>
+        <div className='card-details-p'>
+          <h5>{user.name}-{user.lastName}</h5>
+          <p>Email: {user.email}</p>
+          <p>Data di nascita: {user.dob}</p>
+        </div>
       </div>
 
     </>

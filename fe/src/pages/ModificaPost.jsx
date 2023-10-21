@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import NavbarElement from '../components/navbar/navbar';
 import FooterElement from '../components/footer/Footer';
 import Spinner from 'react-bootstrap/Spinner';
@@ -27,6 +26,8 @@ const ModificaPost = () => {
       unit:''
     }
   });
+
+  const navigate = useNavigate();
 
   // Recupera il token dalla memoria locale
   const token = JSON.parse(localStorage.getItem('loggedInUser'))
@@ -126,6 +127,7 @@ const ModificaPost = () => {
         setMessage('Complimenti!!! Il caricamento è andato a buon fine !!!!!');
         setTimeout(() => {
           setMessage('');
+          navigate('/home')
         }, 2500);
       }
 

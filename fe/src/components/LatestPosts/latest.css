@@ -9,20 +9,12 @@
     padding: 3em 0;
 }
 
-.dettails-post{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .dettails-post *{
     padding: 0.5em;
 }
 
 img{
-    width: 150px;
     height: 200px;
-    object-fit: contain;
 }
 
 .cards{
@@ -36,15 +28,6 @@ img{
     filter: drop-shadow(0 0 5px blue);
     margin-top: 2em;
     position: relative;
-}
-
-.card-details{
-    width: 100%;
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
 h1{
@@ -99,4 +82,14 @@ h1{
     position: absolute;
     top: 10px;
     right: 20px;
+}
+
+
+@media screen and (max-width: 650px){
+    .cards{
+        width: 90%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }

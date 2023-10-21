@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import jwt_decode from "jwt-decode";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 
 import './card-posts.css';
+
+library.add(faEdit, faTrash);
 
 const Card = ({ post }) => {
   const [showAuthor, setShowAuthor] = useState(false);
@@ -18,7 +23,6 @@ const Card = ({ post }) => {
   const tokenData = token;
   const decoded = jwt_decode(tokenData);  
 
-console.log(decoded);
   const toggleAuthor = () => {
     setShowAuthor(!showAuthor);
   };
@@ -134,11 +138,20 @@ console.log(decoded);
 
   return (
     <div className="card-details">
+      <div className="user-in-post">
+          <img className='img-iser-in-post' src={post.author.avatar} alt="" />
+          <p>{post.author.name}{post.author.lastName}</p>
+        </div>
       <div className="dettails-post">
         <img src={post.cover} alt={post.cover} />
-        <h4>{post.title}</h4>
-        <p>Category: {post.category}</p>
-        <p>R.T.: {post.readTime.value}-{post.readTime.unit}</p>
+        <div>
+            <h4>{post.title}</h4>
+          <div className='d-flex'>
+            <p>Category: {post.category}</p>
+            <p>R.T.: {post.readTime.value}-{post.readTime.unit}</p>
+          </div>
+          <p>Contenuto: {post.content}</p>
+        </div>
       </div>
       <Button variant="info" className="button-details-user-out p-0 py-1" onClick={toggleAuthor}>
         {showAuthor ? '' : '? user ?'}
@@ -154,9 +167,9 @@ console.log(decoded);
           </Button>
 
           {post.author ? (
-            <div className="user-details d-flex flex-row ">
+            <div className="user-details">
               <img className='mx-5 h-75' src={post.author.avatar} alt="immagine autore" />
-              <div className='mx-5'>
+              <div className='user-details-container-p'>
                 <p>nome: {post.author.name}</p>
                 <p>cognome: {post.author.lastName}</p>
                 <p>email: {post.author.email}</p>
@@ -186,13 +199,14 @@ console.log(decoded);
                       null
                     ):(
                       <div className="button">
-                        <Button className="m-2" variant="success" onClick={() => startEditComment(comment._id)}>
-                          modifica
+                        <Button className="m-1" variant="success" onClick={() => startEditComment(comment._id)}>
+                          <FontAwesomeIcon icon={faEdit} />
                         </Button>
-                        <Button className="m-2" variant="danger" onClick={() => deleteComment(comment._id)}>
-                          elimina
+                        <Button className="m-1" variant="danger" onClick={() => deleteComment(comment._id)}>
+                          <FontAwesomeIcon icon={faTrash} />
                         </Button>
                       </div>
+
                     )}
                     {editCommentId === comment._id ? (
                       <div>

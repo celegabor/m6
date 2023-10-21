@@ -1,5 +1,5 @@
 .user-detail{
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
@@ -21,7 +21,6 @@
 .user-details{
     height: 120%;
     display: flex;
-    flex-direction: column;
     justify-content: space-around;
     align-items: center;
 }
@@ -110,4 +109,96 @@
     color: white;
     border-radius: 10px;
     border: 1px solid white;
+}
+
+.card-details{
+    width: 100%;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.card-details img{
+    margin: 0 2em;
+}
+.card-details-p{
+    padding: 5em 0;
+}
+
+.dettails-post{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding-top: 2.5em;
+}
+
+.user-in-post{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 50px;
+}
+
+.img-iser-in-post{
+    height: 50px;
+    width: 50px;
+    margin-right: 1em;
+    border-radius: 50%;
+}
+
+.form-search{
+    display: flex;
+    width: 50%;
+}
+
+
+
+
+@media screen and (max-width: 1000px){
+
+    .dettails-post{
+        flex-direction: column;
+    }
+    .user-details img{
+        width: 70%;
+    }
+    .form-search{
+        display: flex;
+        width: 100%;
+    }
+    
+}
+@media screen and (max-width: 700px){
+
+    .card-details{
+        padding-top: 5em;
+    }
+    .card-details img{
+        margin: 0 2em;
+    }
+    .card-details-p{
+        padding: 1em 0;
+    }
+    .user-details{
+        flex-direction: column;
+    }
+    
+}
+
+@media screen and (max-width: 400px){
+
+    .card-details{
+        font-size: 0.7em;
+        padding-top: 6em;
+
+    }
+    .card-details img{
+        width: 80%;
+    }
+   
 }

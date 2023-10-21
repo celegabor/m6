@@ -16,3 +16,29 @@
     font-size: 3em;
     padding: 1em;
 }
+
+.buttonAddComment{
+    margin: 1.5em 0;
+}
+
+@media screen and (max-width: 650px){
+    .add-main{
+       padding: 1em;
+    }  
+    h2{
+        font-size: 1em;
+    }
+}
+@media screen and (max-width: 450px){
+    .form-body-post{
+        margin-top: -3em;
+       scale: 0.8;
+    }  
+    .add-main{
+        padding: 0em;
+    } 
+    h2{
+        font-size: 1em;
+        padding: 2em;
+    } 
+}

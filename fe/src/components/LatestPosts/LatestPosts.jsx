@@ -70,7 +70,6 @@ const LatestPosts = ()=>{
           })
 
           const dataPosts = await response.json()
-
           setPosts(dataPosts.posts);
           setTotalPagesPosts(dataPosts.totalPages)
 
@@ -199,7 +198,7 @@ const LatestPosts = ()=>{
 
             {/* search section */}
             <div className='bg-dark px-5 p-2'>
-              <Form className="d-flex w-25">
+              <Form className="form-search">
                 <Form.Control
                   type="search"
                   placeholder="Search"
@@ -249,7 +248,7 @@ const LatestPosts = ()=>{
                     {posts.map((post) => (
                     <div className="cards" key={post._id}>
                         <Card post={post} />
-                        <div className='d-flex'>
+                        <div className='buttons-delete-edit-post'>
                           <Button className='m-2' variant='danger' onClick={() => deletePost(post._id)}>Cancella</Button>
                           <Link to={`/modificaPost/${post._id}`}>
                             <Button className='m-2' variant='success'>Modifica</Button>

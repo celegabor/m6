@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavbarElement from '../components/navbar/navbar';
 import FooterElement from '../components/footer/Footer';
 import Spinner from 'react-bootstrap/Spinner';
@@ -22,9 +22,10 @@ const ModificaUser = () => {
     email: '',
   });
 
+  const navigate = useNavigate()
+
   // Recupera il token dalla memoria locale
   const token = JSON.parse(localStorage.getItem('loggedInUser'))
-
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -70,9 +71,11 @@ const ModificaUser = () => {
       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/put/${id}`, {
         method: 'PUT',
         headers: {
+        'Authorization': token,
         "Content-Type": "application/json",
-      },
+      }, 
         body: JSON.stringify(userData),
+
       });
 
       if (!response.ok) {
@@ -85,7 +88,8 @@ const ModificaUser = () => {
         setMessage('Complimenti!!! Il caricamento è andato a buon fine !!!!!');
         setTimeout(() => {
           setMessage('');
-        }, 4000);
+          navigate('/home')
+        }, 2500);
       }
       setTimeout(() => {
         setIsLoading(false); 

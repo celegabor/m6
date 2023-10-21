@@ -57,14 +57,51 @@
     border-bottom-left-radius: 0px;
 }
 
-.custom-login-width{
-    height: 70px;
-
+.custom-login{
+    width: 270px;
+    margin-top: 30px;
+    padding: 20px;
+    
 }
 
-.custom-login-width img{
+.custom-login img{
     height: 50px;
     width: 50px;
-    margin: 0 010px;
+    margin: 0 10px;
     border-radius: 50%;
+}
+
+
+@media  screen and (max-width:800px) {
+    .form-login{
+        width: 70%;
+    }
+
+    .custom-login{
+        scale: 0.8;
+    }
+
+}
+@media  screen and (max-width:500px) {
+    .form-login{
+        width: 90%;
+    }
+    .form-login input{
+        width: 90%;
+        font-size: 0.8em;
+
+    }
+    .form-login label{
+        font-size: 0.8em;
+    }
+    .form-login button{
+        font-size: 0.8em;
+        width: 80%;
+        margin-top: 2em;
+    }
+
+    .custom-login{
+        scale: 0.6;
+    }
+
 }

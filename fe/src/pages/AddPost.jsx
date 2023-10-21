@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavbarElement from '../components/navbar/navbar';
 import FooterElement from '../components/footer/Footer';
 import Spinner from 'react-bootstrap/Spinner';
@@ -20,6 +20,9 @@ const AddPost = () => {
   // conversione e recupero dati utente loggato
   const tokenData = token;
   const decoded = jwt_decode(tokenData); 
+
+  const navigate = useNavigate();
+
 
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -127,6 +130,7 @@ const AddPost = () => {
           setMessage('Complimenti!!! Il caricamento è andato a buon fine !!!!!');
           setTimeout(() => {
             setMessage('');
+            navigate('/home');
           }, 2500)
   
         } else {
@@ -218,9 +222,9 @@ const AddPost = () => {
                 <Form.Label>Tempo di Lettura Valore</Form.Label>
                 <Form.Control
                   required
-                  type="text"
+                  type="number"
                   name="readTime.value"
-                  placeholder="Tempo di Lettura Valore"
+                  placeholder="inserisci un numero"
                   value={postData.readTime.value || ''}
                   onChange={handleChange}
                 />
@@ -245,7 +249,7 @@ const AddPost = () => {
                     type="text"
                     name="content"
                     placeholder="content"
-                    value={postData.content || ''} 
+                    value={postData.content} 
                     onChange={handleChange}
                 />
                 </Form.Group>

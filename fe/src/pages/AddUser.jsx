@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import NavbarElement from '../components/navbar/navbar';
 import FooterElement from '../components/footer/Footer';
 import Spinner from 'react-bootstrap/Spinner';
-import { Navigate } from 'react-router-dom'; 
+import { Navigate, useNavigate } from 'react-router-dom'; 
 
 import './add.css'
 
@@ -26,6 +26,9 @@ const AddUser = () => {
     password: ''
   });
   const [isSuccessful, setIsSuccessful] = useState(false);
+
+  const navigate = useNavigate();
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -77,6 +80,7 @@ const AddUser = () => {
         setTimeout(() => {
           setMessage('');
           setIsSuccessful(true);
+          navigate('/home')
         }, 3000);
        
       } else {
@@ -161,12 +165,12 @@ const AddUser = () => {
     
               {/* avatar */}
               <Form.Group className='elementsForm' as={Col} controlId="avatar">
-                <Form.Label>Avatar</Form.Label>
+                <Form.Label>link di internet di un avatar</Form.Label>
                 <Form.Control
                   required
                   type="text"
                   name="avatar"
-                  placeholder="URL dell'Avatar"
+                  placeholder="Link URL del tuo Avatar"
                   value={userData.avatar}
                   onChange={handleChange}
                 />
