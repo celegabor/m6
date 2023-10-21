@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 
-function SuccessGoogle() {
+function Success() {
   const { token } = useParams();
 
   console.log(token);
@@ -13,4 +13,4 @@ function SuccessGoogle() {
   return <Navigate to="/home" replace={true} />;
 }
 
-export default SuccessGoogle;
+export default Success;

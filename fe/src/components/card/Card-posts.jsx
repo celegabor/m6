@@ -18,6 +18,7 @@ const Card = ({ post }) => {
   const tokenData = token;
   const decoded = jwt_decode(tokenData);  
 
+console.log(decoded);
   const toggleAuthor = () => {
     setShowAuthor(!showAuthor);
   };
@@ -153,12 +154,14 @@ const Card = ({ post }) => {
           </Button>
 
           {post.author ? (
-            <div className="user-details">
-              <img src={post.author.avatar} alt="immagine autore" />
-              <p>nome: {post.author.name}</p>
-              <p>cognome: {post.author.lastName}</p>
-              <p>email: {post.author.email}</p>
-              <p>gg nascita: {post.author.dob}</p>
+            <div className="user-details d-flex flex-row ">
+              <img className='mx-5 h-75' src={post.author.avatar} alt="immagine autore" />
+              <div className='mx-5'>
+                <p>nome: {post.author.name}</p>
+                <p>cognome: {post.author.lastName}</p>
+                <p>email: {post.author.email}</p>
+                <p>gg nascita: {post.author.dob}</p>
+              </div>
             </div>
           ) : (
             <div>

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, useParams, Navigate } from 'react-router-dom';
 
 function SuccessGoogle() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const code = searchParams.get('callback?code');
+  const code = searchParams.get('code');
 
   useEffect(() => {
     console.log('Query string:', location.search);
@@ -18,5 +18,15 @@ function SuccessGoogle() {
 
   return <div>Attendi...</div>;
 }
+// const { code } = useParams();
+
+// console.log(code);
+
+// useEffect(() => {
+//   localStorage.setItem('loggedInUser', JSON.stringify(code));
+// }, [code]);
+
+// return <Navigate to="/home" replace={true} />;
+// }
 
 export default SuccessGoogle;
