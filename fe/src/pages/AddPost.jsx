@@ -43,6 +43,7 @@ const AddPost = () => {
 
 
 
+
   const onChangeSetFile = (e) =>{
     setFile(e.target.files[0])
   }

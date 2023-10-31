@@ -9,9 +9,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import { Navigate, useNavigate } from 'react-router-dom'; 
 
 import './add.css'
-
-
-
 import './modificaPost.css'
 
 const AddUser = () => {
